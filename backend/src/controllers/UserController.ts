@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction, query } from 'express';
-import { IUserInteractor } from '../interfaces/user/IUserInteractor';
+import { IUserService } from '../interfaces/user/IUserService';
 
 export class UserController {
-  private interactor: IUserInteractor
+  private interactor: IUserService
 
-  constructor(interactor: IUserInteractor) {
+  constructor(interactor: IUserService) {
     this.interactor = interactor
   }
   async onCreateUser(req: Request, res: Response, next: NextFunction) {

@@ -1,7 +1,7 @@
 import { ICartService } from '../interfaces/cart/ICartService';
 import { ICartRepository } from '../interfaces/cart/ICartRepository';
 
-export class CartInteractor implements ICartService {
+export class CartService implements ICartService {
 
   private repository: ICartRepository;
   constructor(repository: ICartRepository) {

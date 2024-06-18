@@ -1,7 +1,7 @@
 import { IUserService } from '../interfaces/user/IUserService';
 import { IUserRepository } from '../interfaces/user/IUserRepository';
 
-export class UserInteractor implements IUserService {
+export class UserService implements IUserService {
 
   private repository: IUserRepository;
   constructor(repository: IUserRepository) {

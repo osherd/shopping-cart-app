@@ -1,7 +1,7 @@
 import { IProductService } from '../interfaces/product/IProductService';
 import { IProductRepository } from '../interfaces/product/IProductRepository';
 
-export class ProductInteractor implements IProductService {
+export class ProductService implements IProductService {
 
   private repository: IProductRepository;
   constructor(repository: IProductRepository) {

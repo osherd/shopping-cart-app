@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction, query } from 'express';
-import { ICartInteractor } from '../interfaces/cart/ICartInteractor';
+import { ICartService } from '../interfaces/cart/ICartService';
 
 export class CartController {
-  private interactor: ICartInteractor
+  private interactor: ICartService
 
-  constructor(interactor: ICartInteractor) {
+  constructor(interactor: ICartService) {
     this.interactor = interactor
   }
   async onCreateCart(req: Request, res: Response, next: NextFunction) {

@@ -1,4 +1,4 @@
-export interface ICartInteractor {
+export interface ICartService {
   createCart(cartData: any): any;
   findCart(limit: number, offset: number): any;
   findCartById(id: number): any;

@@ -1,4 +1,4 @@
-export interface IUserInteractor {
+export interface IUserService {
   createUser(userData: any): any;
   getUser(limit: number, offset: number): any;
   getUserById(id: string): any;

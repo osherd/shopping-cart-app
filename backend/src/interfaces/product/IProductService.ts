@@ -1,4 +1,4 @@
-export interface IProductInteractor {
+export interface IProductService {
   createProduct(input: any): any;
   getProduct(limit: number, offset: number): any;
   getProductById(productId: string): any;

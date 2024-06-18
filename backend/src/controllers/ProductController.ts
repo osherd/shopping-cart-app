@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction, query } from 'express';
-import { IProductInteractor } from '../interfaces/product/IProductInteractor';
+import { IProductService } from '../interfaces/product/IProductService';
 
 export class ProductController {
-  private interactor: IProductInteractor
+  private interactor: IProductService
 
-  constructor(interactor: IProductInteractor) {
+  constructor(interactor: IProductService) {
     this.interactor = interactor
   }
   async onCreateProduct(req: Request, res: Response, next: NextFunction) {
