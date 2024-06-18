@@ -21,6 +21,9 @@ export class UserService implements IUserService {
   getUserById(userId: string) {
     return this.repository.findById(userId)
   }
+  getUserByEmail(email: string) {
+    return this.repository.findById(email)
+  }
   deleteUserById(userId: string) {
     return this.repository.delete(userId)
   }

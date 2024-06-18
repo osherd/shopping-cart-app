@@ -16,47 +16,50 @@ export class CartController {
   }
   async onCreateCart(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = req.body.user;
+      // @ts-ignore
+      const user = req.user;
 
       if (user) {
 
-        const profile = await this.userInteractor.getUserById(req.body.id);
+        const user = await this.userInteractor.getUserById(req.body.id);
         let cartItems = Array();
 
-        const { id, unit } = <CartItem>req.body;
+        const { id, stockQuantity } = <CartItem>req.body;
 
-        const product = await this.productInteractor.getProductById(id);
+        const product = await this.productInteractor.getProductById(req.body.productId);
 
         if (product) {
 
-          if (profile != null) {
-            cartItems = profile.cart;
+          if (user) {
+            cartItems.push(product)
+
 
             if (cartItems.length > 0) {
               // check and update
-              let existProductItems = cartItems.filter((item) => item.food._id.toString() === id);
+              const existProductItems = cartItems.filter((item) => item.id.toString() === id.toString());
+
               if (existProductItems.length > 0) {
 
                 const index = cartItems.indexOf(existProductItems[0]);
 
-                if (unit > 0) {
-                  cartItems[index] = { product, unit };
+                if (stockQuantity > 0) {
+                  cartItems[index] = { product, stockQuantity };
                 } else {
                   cartItems.splice(index, 1);
                 }
 
               } else {
-                cartItems.push({ product, unit })
+                cartItems.push(product)
               }
 
             } else {
               // add new Item
-              cartItems.push({ product, unit });
+              cartItems.push(product);
             }
 
             if (cartItems) {
-              profile.cart = cartItems as any;
-              const cartResult = await this.userInteractor.updateUser(profile.id, profile);
+              user.cart = cartItems as any;
+              const cartResult = await this.userInteractor.updateUser(user.id, user);
               return res.status(200).json(cartResult.cart);
             }
 

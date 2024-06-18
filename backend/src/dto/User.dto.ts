@@ -23,5 +23,5 @@ export interface UserPayload {
 
 export class CartItem {
   id!: string;
-  unit!: number;
+  stockQuantity!: number;
 }

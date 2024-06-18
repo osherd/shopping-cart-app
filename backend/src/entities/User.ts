@@ -6,6 +6,7 @@ export class User {
     public readonly resetToken: string,
     public readonly resetTokenExpiration: string,
     public readonly id: string,
+    public cart: [any],
     public readonly salt?: string,
   ) { }
 }
