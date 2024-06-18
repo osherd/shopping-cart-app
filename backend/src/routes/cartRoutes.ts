@@ -1,11 +1,11 @@
 import express from "express";
 import { CartRepository } from '../repositories/cartRepository';
-import { CartInteractor } from '../interactors/CartInteractor';
+import { CartService } from '../services/cart.service';
 import { CartController } from '../controllers/CartController';
 
 const router = express.Router();
 const repository = new CartRepository()
-const interactor = new CartInteractor(repository)
+const interactor = new CartService(repository)
 const controller = new CartController(interactor);
 
 
