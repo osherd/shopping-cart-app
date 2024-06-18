@@ -16,57 +16,24 @@ export class CartController {
   }
   async onCreateCart(req: Request, res: Response, next: NextFunction) {
     try {
-      // @ts-ignore
-      const user = req.user;
 
-      if (user) {
-
-        const user = await this.userInteractor.getUserById(req.body.id);
-        let cartItems = Array();
-
-        const { id, stockQuantity } = <CartItem>req.body;
-
-        const product = await this.productInteractor.getProductById(req.body.productId);
-
-        if (product) {
-
-          if (user) {
-            cartItems.push(product)
-
-
-            if (cartItems.length > 0) {
-              // check and update
-              const existProductItems = cartItems.filter((item) => item.id.toString() === id.toString());
-
-              if (existProductItems.length > 0) {
-
-                const index = cartItems.indexOf(existProductItems[0]);
-
-                if (stockQuantity > 0) {
-                  cartItems[index] = { product, stockQuantity };
-                } else {
-                  cartItems.splice(index, 1);
-                }
-
-              } else {
-                cartItems.push(product)
-              }
-
-            } else {
-              // add new Item
-              cartItems.push(product);
-            }
-
-            if (cartItems) {
-              user.cart = cartItems as any;
-              const cartResult = await this.userInteractor.updateUser(user.id, user);
-              return res.status(200).json(cartResult.cart);
-            }
-
-          }
-        }
-
+      const user = await this.userInteractor.getUserById(req.body.userId);
+      if (!user) {
+        throw new Error('Incorect user');
       }
+      const { id, stockQuantity } = <CartItem>req.body;
+
+      const product = await this.productInteractor.getProductById(req.body.productId);
+      if (!product) {
+        throw new Error('Incorrect product id')
+      }
+      if (product.stockQuantity < stockQuantity) {
+        throw new Error('Not enough quantity in stock')
+      }
+
+      const cartItem = await this.cartInteractor.createCart({ id, userId: user.id, productId: product.id, stockQuantity });
+
+      res.status(200).json(cartItem);
 
     } catch (error) {
       next(error);
@@ -110,21 +77,11 @@ export class CartController {
 
   async onUpdateCart(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = parseInt(`${req.query.id}`)
+      const id = req.query.id as string;
       const stockQuantity = parseInt(`${req.query.stockQuantity}`)
-      const updatedData = await this.cartInteractor.updateCart(id, stockQuantity);
-      return res.status(200).json(updatedData)
-
-    } catch (error) {
-      next(error);
-
-    }
-  }
-  async onEditCard(req: Request, res: Response, next: NextFunction) {
-    try {
-      const id = parseInt(`${req.query.id}`)
-      const stockQuantity = parseInt(`${req.query.stockQuantity}`)
-      const updatedData = await this.cartInteractor.updateCart(id, stockQuantity);
+      const userId = parseInt(`${req.query.userId}`);
+      const productId = parseInt(`${req.query.productId}`);
+      const updatedData = await this.cartInteractor.updateCart(id, userId, productId, stockQuantity);
       return res.status(200).json(updatedData)
 
     } catch (error) {

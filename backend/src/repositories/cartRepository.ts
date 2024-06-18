@@ -10,19 +10,54 @@ export class CartRepository implements ICartRepository {
     this.client = pgClient();
   }
 
-  async create({ id, userId, productId, productName, sellingPrice, stockQuantity }: Cart): Promise<Cart> {
-    const cart = await this.client.query(
-      `INSERT INTO cart (id,userId,productId, productName,sellingPrice,stockQuantity) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-      [id, userId, productId, productName, sellingPrice, stockQuantity]
-    );
-    return cart.rows[0];
+  async create({ id, userId, productId, stockQuantity }: Cart): Promise<Cart> {
+    // when we add a product to a cart we remove its quantity and doing it atomically via DB transactions
+
+    try {
+      await this.client.query('BEGIN');
+      const product = await this.client.query(
+        `UPDATE products SET stockQuantity=stockQuantity-$2 WHERE id=$1`,
+        [productId, stockQuantity]
+      )
+      const cart = await this.client.query(
+        `INSERT INTO cart (id,userId,productId,stockQuantity) VALUES ($1,$2,$3,$4) RETURNING *`,
+        [id, userId, productId, stockQuantity]
+      );
+      await this.client.query('COMMIT')
+      console.log(cart.rows)
+      return cart.rows[0];
+    } catch (e) {
+      await this.client.query('ROLLBACK')
+      throw e
+    }
+
   }
-  async update(id: number, stockQuantity: number): Promise<Cart> {
-    const cart = await this.client.query(
-      `UPDATE cart SET stockQuantity=$1 WHERE id=$2 RETURNING *`,
-      [stockQuantity, id]
-    );
-    return cart.rows[0];
+  async update(id: string, userId: number, productId: number, stockQuantity: number): Promise<Cart> {
+    // when we update a product quantity in a a cart we remove its quantity and doing it atomically via DB transactions
+
+
+    try {
+      await this.client.query('BEGIN');
+      const amountCurrentlyHaveInCartRaw = await this.client.query(
+        `SELECT stockQuantity from cart WHERE id=$1 AND userId=$2 AND productId=$3`,
+        [id, userId, productId]
+      )
+      const amountCurrentlyHaveInCart = amountCurrentlyHaveInCartRaw.rows[0];
+      const quantityDiff = stockQuantity - amountCurrentlyHaveInCart
+      const product = await this.client.query(
+        `UPDATE products SET stockQuantity=stockQuantity-$2 WHERE id=$1`,
+        [productId, quantityDiff]
+      )
+      const cart = await this.client.query(
+        `UPDATE cart SET stockQuantity=$4 WHERE id=$1 AND userId=$2 AND productId=$3 RETURNING *`,
+        [id, userId, productId, stockQuantity]
+      );
+      await this.client.query('COMMIT')
+      return cart.rows[0];
+    } catch (e) {
+      await this.client.query('ROLLBACK')
+      throw e
+    }
   }
   async findById(userId: number): Promise<Cart> {
 

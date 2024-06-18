@@ -18,14 +18,11 @@ export class CartService implements ICartService {
 
   }
 
-  async updateCart(id: number, qty: number) {
-    return this.repository.update(id, qty)
+  async updateCart(id: string, userId: number, productId: number, qty: number) {
+    return this.repository.update(id, userId, productId, qty)
   }
 
   async deleteCart(id: string) {
     return this.repository.delete(id)
-  }
-  async editCart(id: number, qty: number) {
-    return this.repository.update(id, qty)
   }
 }

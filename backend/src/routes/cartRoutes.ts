@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { CartRepository } from '../repositories/cartRepository';
 import { CartService } from '../services/cart.service';
 import { CartController } from '../controllers/CartController';
@@ -23,7 +23,11 @@ const controller = new CartController(interactor, userInteractor, productInterac
 
 router.post('/v1/cart', controller.onCreateCart.bind(controller));
 router.get('/v1/cart/:id', controller.onGetCartById.bind(controller));
-router.get('/v1/cart/:id', controller.onDeleteCart.bind(controller));
-router.patch('/v1/cart:id', controller.onUpdateCart.bind(controller))
+router.delete('/v1/cart/:id', controller.onDeleteCart.bind(controller));
+router.patch('/v1/cart/:id', controller.onUpdateCart.bind(controller))
+
+router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).send(err.message)
+})
 
 export default router;

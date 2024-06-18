@@ -30,11 +30,11 @@ export const GenerateSignature = async (payload: AuthPayload) => {
 
 export const ValidateSignature = async (req: Request) => {
 
-  const signature = req.get('Authorization');
+  const token = req.get('Authorization');
 
-  if (signature) {
+  if (token) {
     try {
-      const payload = await jwt.verify(signature.split(' ')[1], APP_SECRET) as AuthPayload;
+      const payload = await jwt.verify(token.split(' ')[1], APP_SECRET) as AuthPayload;
       // @ts-ignore
       req.user = payload;
       return true;

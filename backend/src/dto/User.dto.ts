@@ -15,7 +15,7 @@ export class UserLoginInput {
 
 
 export interface UserPayload {
-  _id: string;
+  id: string;
   email: string;
   verified: boolean;
 }

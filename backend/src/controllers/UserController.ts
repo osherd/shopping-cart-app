@@ -29,7 +29,7 @@ export class UserController {
 
       //Generate the Signature
       const signature = await GenerateSignature({
-        _id: result._id,
+        id: result.id,
         email: result.email,
         verified: result.verified
       })
@@ -51,7 +51,7 @@ export class UserController {
       if (validation) {
 
         const signature = await GenerateSignature({
-          _id: user.id,
+          id: user.id,
           email: user.email,
           verified: user.verified
         })
