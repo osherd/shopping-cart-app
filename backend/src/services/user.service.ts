@@ -1,5 +1,5 @@
-import { IUserService } from '../interfaces/user/IUserService';
 import { IUserRepository } from '../interfaces/user/IUserRepository';
+import { IUserService } from '../interfaces/user/IUserService';
 
 export class UserService implements IUserService {
 
@@ -14,7 +14,7 @@ export class UserService implements IUserService {
 
     return this.repository.create(input)
   }
-  getUser(limit: number, offset: number) {
+  getUsers(limit: number, offset: number) {
 
     return this.repository.find(limit, offset)
   }

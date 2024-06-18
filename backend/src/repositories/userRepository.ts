@@ -10,10 +10,10 @@ export class UserRepository implements IUserRepository {
     this.client = pgClient();
   }
 
-  async create({ email, password, id, resetToken, resetTokenExpiration }: User): Promise<User> {
+  async create({ email, password, id, resetToken, resetTokenExpiration, salt }: User): Promise<User> {
     const user = await this.client.query(
-      `INSERT INTO users (id, email,password,resetToken,resetTokenExpiration) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-      [id, email, password, resetToken, resetTokenExpiration]
+      `INSERT INTO users (id, email,password,resetToken,resetTokenExpiration,salt) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [id, email, password, resetToken, resetTokenExpiration, salt]
     );
     return user.rows[0];
   }
