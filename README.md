@@ -22,7 +22,7 @@ This application is designed for a shopping cart system.
 
    Create User Table
 
-   CREATE TABLE users (
+   `CREATE TABLE users (
       id SERIAL PRIMARY KEY,
       email TEXT NOT NULL,
       password TEXT NOT NULL,
@@ -32,11 +32,11 @@ This application is designed for a shopping cart system.
       FOREIGN KEY (id) REFERENCES users (id),
       created_at timestamptz NOT NULL DEFAULT (now()),
       updated_at timestamptz NOT NULL DEFAULT (now())
-  );
+  )`;
 
   Create Product Table 
 
-  CREATE TABLE products (
+  `CREATE TABLE products (
     id SERIAL PRIMARY KEY,
     sku varchar NOT NULL,
     name TEXT NOT NULL,
@@ -46,15 +46,14 @@ This application is designed for a shopping cart system.
     created_at timestamptz NOT NULL DEFAULT (now()),
     updated_at timestamptz NOT NULL DEFAULT (now()),  
     constraint stock_nonnegative check (stockQuantity >= 0)
-);
+)`;
 
  Create Cart Table
- CREATE TABLE cart (
+ `CREATE TABLE cart (
     id SERIAL PRIMARY KEY,
     userId TEXT NOT NULL,
     productId TEXT NOT NULL,
     stockQuantity TEXT NOT NULL,
     created_at timestamptz NOT NULL DEFAULT (now()),
     updated_at timestamptz NOT NULL DEFAULT (now())
-  
-);
+)`;
