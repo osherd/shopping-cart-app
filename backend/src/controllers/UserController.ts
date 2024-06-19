@@ -35,34 +35,35 @@ export class UserController {
 
       // Send the result
       return res.status(201).json({ signature, email: result.email })
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 
   async onUserLogin(req: Request, res: Response, next: NextFunction) {
     const userInputs = req.body;
     const { password, id } = userInputs;
-    const user = await this.interactor.getUserById(id);
-    if (user) {
-      const validation = await ValidatePassword(password, user.password, user.salt);
+    try {
+      const user = await this.interactor.getUserById(id);
+      if (user) {
+        const validation = await ValidatePassword(password, user.password, user.salt);
 
-      if (validation) {
+        if (validation) {
 
-        const signature = await GenerateSignature({
-          id: user.id,
-          email: user.email,
-        })
+          const signature = await GenerateSignature({
+            id: user.id,
+            email: user.email,
+          })
 
-        return res.status(200).json({
-          signature,
-          email: user.email
-        })
+          return res.status(200).json({
+            signature,
+            email: user.email
+          })
+        }
       }
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
-
-
-
   }
 
 
@@ -80,9 +81,8 @@ export class UserController {
       const userId = req.params.id;
       const data = await this.interactor.deleteUserById(userId);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error)
-
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 
@@ -93,9 +93,8 @@ export class UserController {
       const limit = parseInt(`${req.query.limit}`) || 10;
       const data = await this.interactor.getUsers(limit, offset);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error)
-
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 
@@ -106,9 +105,8 @@ export class UserController {
       const updatedData = await this.interactor.updateUser(id, name);
       return res.status(200).json(updatedData)
 
-    } catch (error) {
-      next(error);
-
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 }

@@ -13,6 +13,5 @@ router.post('/v1/products', controller.onCreateProduct.bind(controller));
 router.get('/v1/products', controller.onGetProducts.bind(controller));
 router.get('/v1/products/:id', controller.onGetProductById.bind(controller));
 router.get('/v1/products/:id', controller.onDeleteProductById.bind(controller));
-router.patch('/v1/products:id', controller.onUpdateStock.bind(controller))
 
 export default router;

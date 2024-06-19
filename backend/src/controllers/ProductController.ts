@@ -12,8 +12,8 @@ export class ProductController {
       const body = req.body;
       const data = await this.interactor.createProduct(body);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 
@@ -22,9 +22,8 @@ export class ProductController {
       const productId = req.params.id;
       const data = await this.interactor.getProductById(productId);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error)
-
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
   async onDeleteProductById(req: Request, res: Response, next: NextFunction) {
@@ -32,8 +31,8 @@ export class ProductController {
       const productId = req.params.id;
       const data = await this.interactor.deleteProductById(productId);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error)
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 
@@ -45,22 +44,8 @@ export class ProductController {
       const limit = parseInt(`${req.query.limit}`) || 10;
       const data = await this.interactor.getProduct(limit, offset);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error)
-
-    }
-  }
-
-  async onUpdateStock(req: Request, res: Response, next: NextFunction) {
-    try {
-      const id = parseInt(`${req.query.id}`)
-      const stock = parseInt(`${req.query.stockQuantity}`);
-      const updatedData = await this.interactor.updateStock(id, stock);
-      return res.status(200).json(updatedData)
-
-    } catch (error) {
-      next(error);
-
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 }

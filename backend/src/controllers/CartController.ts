@@ -41,7 +41,7 @@ export class CartController {
 
   async onGetCartById(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = parseInt(`${req.query.id}`)
+      const id = parseInt(`${req.params.id}`)
       const data = await this.cartInteractor.findCartById(id);
       return res.status(200).json(data);
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class CartController {
 
   async onUpdateCart(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.query.id as string;
+      const id = parseInt(`${req.query.id}`);
       const stockQuantity = parseInt(`${req.query.stockQuantity}`)
       const userId = parseInt(`${req.query.userId}`);
       const productId = parseInt(`${req.query.productId}`);

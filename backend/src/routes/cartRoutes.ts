@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import { CartRepository } from '../repositories/cartRepository';
 import { CartService } from '../services/cart.service';
 import { CartController } from '../controllers/CartController';

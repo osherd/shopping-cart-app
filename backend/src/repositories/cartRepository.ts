@@ -15,7 +15,7 @@ export class CartRepository implements ICartRepository {
 
     try {
       await this.client.query('BEGIN');
-      await this.client.query(
+      const product = await this.client.query(
         `UPDATE products SET stockQuantity=stockQuantity-$2 WHERE id=$1`,
         [productId, stockQuantity]
       )
@@ -31,7 +31,7 @@ export class CartRepository implements ICartRepository {
     }
 
   }
-  async update(id: string, userId: number, productId: number, stockQuantity: number): Promise<Cart> {
+  async update(id: number, userId: number, productId: number, stockQuantity: number): Promise<Cart> {
     // when we update a product quantity in a cart we remove its quantity and doing it atomically via DB transactions
 
     try {
@@ -40,7 +40,7 @@ export class CartRepository implements ICartRepository {
         `SELECT stockQuantity from cart WHERE id=$1 AND userId=$2 AND productId=$3`,
         [id, userId, productId]
       )
-      const amountCurrentlyHaveInCart = amountCurrentlyHaveInCartRaw.rows[0];
+      const amountCurrentlyHaveInCart = parseInt(amountCurrentlyHaveInCartRaw.rows[0]?.stockquantity);
       const quantityDiff = stockQuantity - amountCurrentlyHaveInCart
 
       await this.client.query(
