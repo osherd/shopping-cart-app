@@ -35,26 +35,26 @@ This application is designed for a shopping cart system.
       updated_at timestamptz NOT NULL DEFAULT (now())
   )`;
 
-  Create Product Table 
+     Create Product Table 
 
-  `CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    sku varchar NOT NULL,
-    name TEXT NOT NULL,
-    sellingPrice bigint NOT NULL,
-    stockQuantity bigint,
-    expirationDate TEXT NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT (now()),
-    updated_at timestamptz NOT NULL DEFAULT (now()),  
-    constraint stock_nonnegative check (stockQuantity >= 0)
-)`;
+     `CREATE TABLE products (
+       id SERIAL PRIMARY KEY,
+       sku varchar NOT NULL,
+       name TEXT NOT NULL,
+       sellingPrice bigint NOT NULL,
+       stockQuantity bigint,
+       expirationDate TEXT NOT NULL,
+       created_at timestamptz NOT NULL DEFAULT (now()),
+       updated_at timestamptz NOT NULL DEFAULT (now()),  
+       constraint stock_nonnegative check (stockQuantity >= 0)
+   )`;
 
- Create Cart Table
- `CREATE TABLE cart (
-    id SERIAL PRIMARY KEY,
-    userId TEXT NOT NULL,
-    productId TEXT NOT NULL,
-    stockQuantity TEXT NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT (now()),
-    updated_at timestamptz NOT NULL DEFAULT (now())
-)`;
+    Create Cart Table
+    `CREATE TABLE cart (
+       id SERIAL PRIMARY KEY,
+       userId TEXT NOT NULL,
+       productId TEXT NOT NULL,
+       stockQuantity TEXT NOT NULL,
+       created_at timestamptz NOT NULL DEFAULT (now()),
+       updated_at timestamptz NOT NULL DEFAULT (now())
+   )`;
