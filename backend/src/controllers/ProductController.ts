@@ -34,7 +34,6 @@ export class ProductController {
       return res.status(200).json(data);
     } catch (error) {
       next(error)
-
     }
   }
 

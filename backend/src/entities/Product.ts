@@ -4,7 +4,7 @@ export class Product {
     public readonly name: string,
     public readonly sellingPrice: number,
     public readonly stockQuantity: number,
+    public readonly expirationDate: Date,
     public readonly id: string,
-
   ) { }
 }

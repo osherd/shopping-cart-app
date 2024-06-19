@@ -11,10 +11,10 @@ export class ProductRepository implements IProductRepository {
     this.client = pgClient();
   }
 
-  async create({ sku, name, sellingPrice, stockQuantity }: Product): Promise<Product> {
+  async create({ sku, name, sellingPrice, stockQuantity, expirationDate }: Product): Promise<Product> {
     const product = await this.client.query(
-      `INSERT INTO products (sku, name,sellingPrice,stockQuantity) VALUES ($1,$2,$3,$4) RETURNING *`,
-      [sku, name, sellingPrice, stockQuantity]
+      `INSERT INTO products (sku, name,sellingPrice,stockQuantity,expirationDate) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [sku, name, sellingPrice, stockQuantity, expirationDate]
     );
     return product.rows[0];
   }

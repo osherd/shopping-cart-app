@@ -31,11 +31,10 @@ export class UserController {
       const signature = await GenerateSignature({
         id: result.id,
         email: result.email,
-        verified: result.verified
       })
 
       // Send the result
-      return res.status(201).json({ signature, verified: result.verified, email: result.email })
+      return res.status(201).json({ signature, email: result.email })
     } catch (error) {
       next(error);
     }
@@ -43,7 +42,7 @@ export class UserController {
 
   async onUserLogin(req: Request, res: Response, next: NextFunction) {
     const userInputs = req.body;
-    const { password, email, id } = userInputs;
+    const { password, id } = userInputs;
     const user = await this.interactor.getUserById(id);
     if (user) {
       const validation = await ValidatePassword(password, user.password, user.salt);
@@ -53,13 +52,11 @@ export class UserController {
         const signature = await GenerateSignature({
           id: user.id,
           email: user.email,
-          verified: user.verified
         })
 
         return res.status(200).json({
           signature,
-          email: user.email,
-          verified: user.verified
+          email: user.email
         })
       }
     }
@@ -76,7 +73,6 @@ export class UserController {
       return res.status(200).json(data);
     } catch (error) {
       next(error)
-
     }
   }
   async onDeleteUserById(req: Request, res: Response, next: NextFunction) {
@@ -89,7 +85,6 @@ export class UserController {
 
     }
   }
-
 
   async onGetUsers(req: Request, res: Response, next: NextFunction) {
 

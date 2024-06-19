@@ -15,7 +15,7 @@ export class CartRepository implements ICartRepository {
 
     try {
       await this.client.query('BEGIN');
-      const product = await this.client.query(
+      await this.client.query(
         `UPDATE products SET stockQuantity=stockQuantity-$2 WHERE id=$1`,
         [productId, stockQuantity]
       )
@@ -24,17 +24,15 @@ export class CartRepository implements ICartRepository {
         [id, userId, productId, stockQuantity]
       );
       await this.client.query('COMMIT')
-      console.log(cart.rows)
       return cart.rows[0];
-    } catch (e) {
+    } catch (err: any) {
       await this.client.query('ROLLBACK')
-      throw e
+      throw err
     }
 
   }
   async update(id: string, userId: number, productId: number, stockQuantity: number): Promise<Cart> {
-    // when we update a product quantity in a a cart we remove its quantity and doing it atomically via DB transactions
-
+    // when we update a product quantity in a cart we remove its quantity and doing it atomically via DB transactions
 
     try {
       await this.client.query('BEGIN');
@@ -44,7 +42,8 @@ export class CartRepository implements ICartRepository {
       )
       const amountCurrentlyHaveInCart = amountCurrentlyHaveInCartRaw.rows[0];
       const quantityDiff = stockQuantity - amountCurrentlyHaveInCart
-      const product = await this.client.query(
+
+      await this.client.query(
         `UPDATE products SET stockQuantity=stockQuantity-$2 WHERE id=$1`,
         [productId, quantityDiff]
       )
@@ -54,9 +53,9 @@ export class CartRepository implements ICartRepository {
       );
       await this.client.query('COMMIT')
       return cart.rows[0];
-    } catch (e) {
+    } catch (err: any) {
       await this.client.query('ROLLBACK')
-      throw e
+      throw err
     }
   }
   async findById(userId: number): Promise<Cart> {

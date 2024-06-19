@@ -2,7 +2,6 @@ import { Request, Response, NextFunction, query } from 'express';
 import { ICartService } from '../interfaces/cart/ICartService';
 import { IUserService } from '../interfaces/user/IUserService';
 import { IProductService } from '../interfaces/product/IProductService';
-import { CartItem } from '../dto/User.dto';
 
 export class CartController {
   private cartInteractor: ICartService
@@ -21,7 +20,7 @@ export class CartController {
       if (!user) {
         throw new Error('Incorect user');
       }
-      const { id, stockQuantity } = <CartItem>req.body;
+      const { id, stockQuantity } = req.body;
 
       const product = await this.productInteractor.getProductById(req.body.productId);
       if (!product) {
@@ -35,8 +34,8 @@ export class CartController {
 
       res.status(200).json(cartItem);
 
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 
@@ -45,9 +44,8 @@ export class CartController {
       const id = parseInt(`${req.query.id}`)
       const data = await this.cartInteractor.findCartById(id);
       return res.status(200).json(data);
-    } catch (error) {
-      next(error)
-
+    } catch (error: any) {
+      res.status(500).send(error.message);
     }
   }
   async onDeleteCart(req: Request, res: Response, next: NextFunction) {
@@ -84,9 +82,8 @@ export class CartController {
       const updatedData = await this.cartInteractor.updateCart(id, userId, productId, stockQuantity);
       return res.status(200).json(updatedData)
 
-    } catch (error) {
-      next(error);
-
+    } catch (error: any) {
+      res.status(500).send(error.message)
     }
   }
 }
