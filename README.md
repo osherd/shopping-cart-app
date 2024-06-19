@@ -59,4 +59,4 @@ This application is designed for a shopping cart system.
        updated_at timestamptz NOT NULL DEFAULT (now())
    )`;
 8. Call user SignUp API and put the return signature data on the next API calls as  Bearer Token on Authorization - ![image](https://github.com/osherd/shopping-cart-app/assets/22489905/b87299d5-7fbe-45f8-9c47-9adbae5c7621)
-
+9. Postman documentation for API endpoints - https://documenter.getpostman.com/view/30173055/2sA3XTeKxF
