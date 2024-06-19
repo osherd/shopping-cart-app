@@ -14,7 +14,7 @@ This application is designed for a shopping cart system.
 1. Clone from the Github `git clone https://github.com/osherd/shopping-cart-app.git`.
 2. Go to the folder `cd backend`.
 3. Initialize dependencies `npm install`.
-4. 
+4. Put ConnectionString for db connect - 'postgresql://shopping-cart_owner:HwFRQq26nLMa@ep-raspy-smoke-a58plnfo.us-east-2.aws.neon.tech/shopping-cart?sslmode=require'
 5. Create the database `shopping-cart-system`.
 6. Run the app. Use `npm start`
 7. I used for this assignment neon.tech  - It's  an open-source cloud database platform that provides a fully.  (other databases optional)
